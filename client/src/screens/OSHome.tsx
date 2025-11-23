@@ -1,7 +1,7 @@
 import { Link } from "wouter";
 import { motion } from "framer-motion";
 import { Wifi, Battery, Signal } from "lucide-react";
-import logoImage from "@assets/LogoForHeader-removebg-preview_1763889598297.png";
+import boundierIcon from "@assets/2_1763890306084.png";
 
 export function OSHome() {
   const currentTime = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
@@ -47,9 +47,8 @@ export function OSHome() {
               whileTap={{ scale: 0.9 }}
               className="flex flex-col items-center gap-2 group"
             >
-              <div className="w-14 h-14 rounded-2xl bg-[#000543] flex items-center justify-center shadow-lg border border-white/10 group-hover:border-[#0038FF] transition-colors relative overflow-hidden">
-                 <div className="absolute inset-0 bg-[#0038FF]/20" />
-                 <span className="text-white font-bold text-2xl italic">b_</span>
+              <div className="w-14 h-14 rounded-2xl overflow-hidden shadow-lg border border-white/10 group-hover:border-[#0038FF] transition-colors relative">
+                 <img src={boundierIcon} alt="Boundier" className="w-full h-full object-cover" />
               </div>
               <span className="text-white text-xs font-medium drop-shadow-md">Boundier</span>
             </motion.div>

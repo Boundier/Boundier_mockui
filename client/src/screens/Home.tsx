@@ -29,7 +29,7 @@ export function Home() {
            <Shield size={48} className="text-white" />
         </div>
         
-        <h2 className="text-2xl text-white font-bold mb-2">System Secure</h2>
+        <h2 className="text-2xl text-white font-bold mb-2">Mind Secure</h2>
         <p className="text-white/60 text-sm max-w-[200px]">
           Real-time influence detection is active across your device.
         </p>
