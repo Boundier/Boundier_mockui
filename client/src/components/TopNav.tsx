@@ -1,19 +1,20 @@
 import { Link, useLocation } from "wouter";
-import { Home, BarChart2, Settings, Menu } from "lucide-react";
-import { motion } from "framer-motion";
+import { Home, BarChart2, Settings } from "lucide-react";
 
 export function TopNav() {
   const [location] = useLocation();
-  const isSocial = location === '/social';
+  
+  // Only show nav on Boundier app screens
+  const showNav = ['/boundier', '/dashboard', '/settings'].includes(location);
 
-  if (isSocial) return null;
+  if (!showNav) return null;
 
   return (
     <nav className="fixed bottom-0 left-0 right-0 z-50 bg-[#000543] border-t border-white/10 pb-safe">
       <div className="flex justify-around items-center h-16 px-2">
-        <Link href="/">
-          <div className={`flex flex-col items-center justify-center w-16 py-1 gap-1 ${location === '/' ? 'text-[#0038FF]' : 'text-white/40'}`}>
-            <Home size={24} strokeWidth={location === '/' ? 2.5 : 2} />
+        <Link href="/boundier">
+          <div className={`flex flex-col items-center justify-center w-16 py-1 gap-1 ${location === '/boundier' ? 'text-[#0038FF]' : 'text-white/40'}`}>
+            <Home size={24} strokeWidth={location === '/boundier' ? 2.5 : 2} />
             <span className="text-[10px] font-medium">Home</span>
           </div>
         </Link>
