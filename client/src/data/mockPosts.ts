@@ -1,3 +1,9 @@
+import studentExam from "@assets/stock_images/student_taking_exam__d486c2a9.jpg";
+import shockedStudent from "@assets/stock_images/shocked_student_look_14eef9b2.jpg";
+import graduation from "@assets/stock_images/graduation_scholarsh_ce07a8f3.jpg";
+import groupStudy from "@assets/stock_images/group_of_students_st_8816a382.jpg";
+import teacher from "@assets/stock_images/classroom_teacher_c3a8c085.jpg";
+
 export interface AudioFlag {
   high_tension: boolean;
   speechRate: number;
@@ -20,6 +26,7 @@ export interface Post {
   capsIntensity: number;
   clickbaitWords: string[];
   timestamp: number;
+  imageUrl?: string;
 }
 
 const now = Date.now();
@@ -38,6 +45,7 @@ export const MOCK_POSTS: Post[] = [
     capsIntensity: 0,
     clickbaitWords: [],
     timestamp: now - 3 * hour,
+    imageUrl: studentExam
   },
   {
     id: "post-2",
@@ -50,6 +58,7 @@ export const MOCK_POSTS: Post[] = [
     capsIntensity: 1,
     clickbaitWords: ["one trick", "ruin", "watch now"],
     timestamp: now - 1 * day,
+    imageUrl: shockedStudent
   },
   {
     id: "post-3",
@@ -62,6 +71,7 @@ export const MOCK_POSTS: Post[] = [
     capsIntensity: 1,
     clickbaitWords: ["only 2 hours", "limited"],
     timestamp: now - 10 * hour,
+    imageUrl: graduation
   },
   {
     id: "post-4",
@@ -74,6 +84,7 @@ export const MOCK_POSTS: Post[] = [
     capsIntensity: 0,
     clickbaitWords: ["you won't believe", "shocking"],
     timestamp: now - 4 * day,
+    imageUrl: studentExam // Reuse as generic exam center
   },
   {
     id: "post-5",
@@ -86,6 +97,7 @@ export const MOCK_POSTS: Post[] = [
     capsIntensity: 0,
     clickbaitWords: [],
     timestamp: now - 2 * day,
+    imageUrl: groupStudy
   },
   {
     id: "post-6",
@@ -98,6 +110,7 @@ export const MOCK_POSTS: Post[] = [
     capsIntensity: 0,
     clickbaitWords: ["survey", "reveal"],
     timestamp: now - 5 * day,
+    imageUrl: teacher
   },
   {
     id: "post-7",
@@ -110,5 +123,6 @@ export const MOCK_POSTS: Post[] = [
     capsIntensity: 0,
     clickbaitWords: ["people like you"],
     timestamp: now - 6 * hour,
+    imageUrl: studentExam // Reuse generic exam
   },
 ];

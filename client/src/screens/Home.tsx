@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { TopNav } from "@/components/TopNav";
-import { Shield, Activity, Lock, Wifi, AlertTriangle } from "lucide-react";
+import { Brain, Activity, Lock, Wifi, AlertTriangle } from "lucide-react";
 import logoImage from "@assets/LogoForHeader-removebg-preview_1763889598297.png";
 
 export function Home() {
@@ -26,10 +26,10 @@ export function Home() {
         
         <div className="w-32 h-32 rounded-full border-4 border-[#0038FF]/30 flex items-center justify-center mb-6 relative">
            <div className="absolute inset-0 rounded-full border-4 border-t-[#0038FF] border-r-transparent border-b-transparent border-l-transparent animate-spin duration-3000" />
-           <Shield size={48} className="text-white" />
+           <Brain size={48} className="text-white" />
         </div>
         
-        <h2 className="text-2xl text-white font-bold mb-2">Mind Secure</h2>
+        <h2 className="text-2xl text-white font-bold mb-2">Mind Secured</h2>
         <p className="text-white/60 text-sm max-w-[200px]">
           Real-time influence detection is active across your device.
         </p>

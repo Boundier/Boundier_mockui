@@ -28,17 +28,29 @@ export function PostCard({ post, onClick }: PostCardProps) {
       </div>
 
       {/* Content */}
-      <div className="relative bg-gray-100 aspect-video flex items-center justify-center text-gray-400">
-        {post.type === "video" && <Play size={48} className="opacity-50" />}
-        {post.type === "image" && <ImageIcon size={48} className="opacity-50" />}
-        {post.type === "headline" && <FileText size={48} className="opacity-50" />}
+      <div className="relative bg-gray-100 aspect-video flex items-center justify-center text-gray-400 overflow-hidden">
+        {post.imageUrl ? (
+          <img 
+            src={post.imageUrl} 
+            alt={post.title}
+            className="absolute inset-0 w-full h-full object-cover"
+          />
+        ) : null}
         
         <div 
-          className="absolute inset-0 opacity-20"
+          className="absolute inset-0"
           style={{
-            backgroundColor: `hsl(${post.thumbnail.saturation * 360}, 70%, 50%)` 
+            backgroundColor: post.imageUrl ? 'rgba(0,0,0,0.1)' : `hsl(${post.thumbnail.saturation * 360}, 70%, 50%)`,
+            opacity: post.imageUrl ? 1 : 0.2
           }}
         />
+        
+        {/* Icon Overlay */}
+        <div className="relative z-10 bg-black/30 p-3 rounded-full backdrop-blur-sm text-white">
+          {post.type === "video" && <Play size={24} fill="currentColor" />}
+          {post.type === "image" && <ImageIcon size={24} />}
+          {post.type === "headline" && <FileText size={24} />}
+        </div>
       </div>
 
       {/* Text */}

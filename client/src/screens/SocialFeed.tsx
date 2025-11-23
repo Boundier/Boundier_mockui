@@ -39,12 +39,6 @@ export function SocialFeed() {
            </Link>
            <h1 className="font-bold text-lg text-gray-900 tracking-tight">Social <span className="font-normal text-gray-400 text-sm">(mock)</span></h1>
         </div>
-        <Link href="/dashboard">
-          <button className="flex items-center gap-1.5 text-xs font-bold text-blue-600 bg-blue-50 px-3 py-1.5 rounded-full hover:bg-blue-100 transition-colors">
-            <BarChart2 size={14} />
-            DASHBOARD
-          </button>
-        </Link>
       </header>
 
       {/* Feed */}
