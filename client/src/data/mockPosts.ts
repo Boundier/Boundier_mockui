@@ -133,4 +133,46 @@ export const MOCK_POSTS: Post[] = [
     imageUrl: studentExam, // Reuse generic exam
     biasScore: 0.7
   },
+  {
+    id: "post-8",
+    type: "image",
+    title: "Beautiful sunset at the campus today 🌅",
+    text: "Just taking a moment to appreciate the view after a long day of classes.",
+    thumbnail: { saturation: 0.6, faces: 0, expression: "neutral" },
+    audioFlag: { high_tension: false, speechRate: 1.0 },
+    punctuationIntensity: 0,
+    capsIntensity: 0,
+    clickbaitWords: [],
+    timestamp: now - 2 * hour,
+    imageUrl: "https://images.unsplash.com/photo-1470252649378-9c29740c9fa8?q=80&w=2070&auto=format&fit=crop",
+    biasScore: 0.0
+  },
+  {
+    id: "post-9",
+    type: "headline",
+    title: "Coffee shop recommendations near the library?",
+    text: "Looking for a quiet place to study with good wifi. Any suggestions?",
+    thumbnail: { saturation: 0.1, faces: 0, expression: "neutral" },
+    audioFlag: { high_tension: false, speechRate: 1.0 },
+    punctuationIntensity: 0,
+    capsIntensity: 0,
+    clickbaitWords: [],
+    timestamp: now - 30 * 60000, // 30 mins ago
+    imageUrl: "https://images.unsplash.com/photo-1501504905252-473c47e087f8?q=80&w=1974&auto=format&fit=crop",
+    biasScore: 0.0
+  },
+  {
+    id: "post-10",
+    type: "image",
+    title: "My new setup for coding!",
+    text: "Finally upgraded my monitor. Productivity boost incoming.",
+    thumbnail: { saturation: 0.4, faces: 0, expression: "neutral" },
+    audioFlag: { high_tension: false, speechRate: 1.0 },
+    punctuationIntensity: 0,
+    capsIntensity: 0,
+    clickbaitWords: [],
+    timestamp: now - 5 * hour,
+    imageUrl: "https://images.unsplash.com/photo-1587831990711-23ca6441447b?q=80&w=2003&auto=format&fit=crop",
+    biasScore: 0.0
+  }
 ];

@@ -4,6 +4,7 @@ const KEYS = {
   PROFILE: 'boundier_profile',
   DISTORTION: 'boundier_distortion',
   PATTERN: 'boundier_pattern',
+  HISTORY: 'boundier_history',
 };
 
 export const storage = {
@@ -61,10 +62,27 @@ export const storage = {
     localStorage.setItem(KEYS.PATTERN, JSON.stringify(pattern));
   },
 
+  getHistory: <T>(): T[] => {
+    try {
+      const item = localStorage.getItem(KEYS.HISTORY);
+      return item ? JSON.parse(item) : [];
+    } catch {
+      return [];
+    }
+  },
+
+  addHistoryItem: <T>(item: T) => {
+    const history = storage.getHistory<T>();
+    // Add to beginning
+    history.unshift(item);
+    localStorage.setItem(KEYS.HISTORY, JSON.stringify(history));
+  },
+
   reset: () => {
     localStorage.removeItem(KEYS.EVENTS);
     localStorage.removeItem(KEYS.PROFILE);
     localStorage.removeItem(KEYS.DISTORTION);
     localStorage.removeItem(KEYS.PATTERN);
+    localStorage.removeItem(KEYS.HISTORY);
   }
 };

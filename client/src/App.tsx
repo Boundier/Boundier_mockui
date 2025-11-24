@@ -9,6 +9,7 @@ import { Home } from "@/screens/Home";
 import { SocialFeed } from "@/screens/SocialFeed";
 import { Dashboard } from "@/screens/Dashboard";
 import { SettingsScreen } from "@/screens/Settings";
+import { HistoryScreen } from "@/screens/History";
 import { GestureNav } from "@/components/GestureNav";
 
 function Router() {
@@ -19,6 +20,7 @@ function Router() {
       <Route path="/social" component={SocialFeed} />
       <Route path="/dashboard" component={Dashboard} />
       <Route path="/settings" component={SettingsScreen} />
+      <Route path="/history" component={HistoryScreen} />
       <Route component={NotFound} />
     </Switch>
   );

@@ -9,7 +9,7 @@ export function Home() {
       
       {/* Header with Logo Top Left */}
       <header className="flex items-center justify-between mb-8 pt-4">
-        <img src={logoImage} alt="Boundier" className="h-10 object-contain" />
+        <img src={logoImage} alt="Boundier" className="h-14 object-contain" />
         <div className="flex items-center gap-2">
           <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
           <span className="text-xs text-green-500 font-bold tracking-wider uppercase">Active</span>
