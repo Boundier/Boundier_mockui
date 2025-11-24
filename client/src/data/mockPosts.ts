@@ -27,6 +27,7 @@ export interface Post {
   clickbaitWords: string[];
   timestamp: number;
   imageUrl?: string;
+  biasScore: number;
 }
 
 const now = Date.now();
@@ -45,7 +46,8 @@ export const MOCK_POSTS: Post[] = [
     capsIntensity: 0,
     clickbaitWords: [],
     timestamp: now - 3 * hour,
-    imageUrl: studentExam
+    imageUrl: studentExam,
+    biasScore: 0.2
   },
   {
     id: "post-2",
@@ -58,7 +60,8 @@ export const MOCK_POSTS: Post[] = [
     capsIntensity: 1,
     clickbaitWords: ["one trick", "ruin", "watch now"],
     timestamp: now - 1 * day,
-    imageUrl: shockedStudent
+    imageUrl: shockedStudent,
+    biasScore: 0.8
   },
   {
     id: "post-3",
@@ -71,7 +74,8 @@ export const MOCK_POSTS: Post[] = [
     capsIntensity: 1,
     clickbaitWords: ["only 2 hours", "limited"],
     timestamp: now - 10 * hour,
-    imageUrl: graduation
+    imageUrl: graduation,
+    biasScore: 0.6
   },
   {
     id: "post-4",
@@ -84,7 +88,8 @@ export const MOCK_POSTS: Post[] = [
     capsIntensity: 0,
     clickbaitWords: ["you won't believe", "shocking"],
     timestamp: now - 4 * day,
-    imageUrl: studentExam // Reuse as generic exam center
+    imageUrl: studentExam, // Reuse as generic exam center
+    biasScore: 0.9
   },
   {
     id: "post-5",
@@ -97,7 +102,8 @@ export const MOCK_POSTS: Post[] = [
     capsIntensity: 0,
     clickbaitWords: [],
     timestamp: now - 2 * day,
-    imageUrl: groupStudy
+    imageUrl: groupStudy,
+    biasScore: 0.1
   },
   {
     id: "post-6",
@@ -110,7 +116,8 @@ export const MOCK_POSTS: Post[] = [
     capsIntensity: 0,
     clickbaitWords: ["survey", "reveal"],
     timestamp: now - 5 * day,
-    imageUrl: teacher
+    imageUrl: teacher,
+    biasScore: 0.3
   },
   {
     id: "post-7",
@@ -123,6 +130,7 @@ export const MOCK_POSTS: Post[] = [
     capsIntensity: 0,
     clickbaitWords: ["people like you"],
     timestamp: now - 6 * hour,
-    imageUrl: studentExam // Reuse generic exam
+    imageUrl: studentExam, // Reuse generic exam
+    biasScore: 0.7
   },
 ];

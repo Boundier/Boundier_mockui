@@ -2,6 +2,7 @@
 const KEYS = {
   EVENTS: 'boundier_events',
   PROFILE: 'boundier_profile',
+  DISTORTION: 'boundier_distortion',
   PATTERN: 'boundier_pattern',
 };
 
@@ -34,6 +35,19 @@ export const storage = {
     localStorage.setItem(KEYS.PROFILE, JSON.stringify(profile));
   },
 
+  getDistortion: <T>(defaultProfile: T): T => {
+    try {
+      const item = localStorage.getItem(KEYS.DISTORTION);
+      return item ? JSON.parse(item) : defaultProfile;
+    } catch {
+      return defaultProfile;
+    }
+  },
+
+  saveDistortion: <T>(profile: T) => {
+    localStorage.setItem(KEYS.DISTORTION, JSON.stringify(profile));
+  },
+
   getPattern: <T>(): T[] => {
     try {
       const item = localStorage.getItem(KEYS.PATTERN);
@@ -50,6 +64,7 @@ export const storage = {
   reset: () => {
     localStorage.removeItem(KEYS.EVENTS);
     localStorage.removeItem(KEYS.PROFILE);
+    localStorage.removeItem(KEYS.DISTORTION);
     localStorage.removeItem(KEYS.PATTERN);
   }
 };

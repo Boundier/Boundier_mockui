@@ -10,6 +10,23 @@ export interface InfluenceVector {
   visual_hype: number;
 }
 
+export interface DistortionVector {
+  emotional_overload: number;
+  selective_framing: number;
+  narrative_skew: number;
+}
+
+export interface EchoChamberMetrics {
+  viewpoint_diversity: number; // 0-1 (1 is high diversity)
+  repetition_score: number;    // 0-1 (1 is high repetition)
+  alignment_trend: number;     // 0-1 (1 is high alignment)
+}
+
+export interface ExposureMetrics {
+  source_variety: number;      // 0-1
+  topic_breadth: number;       // 0-1
+}
+
 export interface ResponseVector {
   engagement: number;
   hesitation: number;
@@ -27,10 +44,19 @@ export interface InteractionMetrics {
 
 export interface AnalysisResult {
   influenceVector: InfluenceVector;
+  distortionVector: DistortionVector;
   responseVector: ResponseVector;
   explanation: string;
   timestamp: number;
   postId: string;
+}
+
+export interface IntegratedPattern {
+  influence: number;
+  distortion: number;
+  echo_risk: number;
+  exposure_health: number;
+  timestamp: number;
 }
 
 const clamp = (num: number, min: number, max: number) => Math.min(Math.max(num, min), max);
@@ -70,6 +96,22 @@ export function analyzePost(post: Post, interaction: InteractionMetrics): Analys
     visual_hype,
   };
 
+  // Distortion Detection Logic
+  // Emotional Overload: High fear/hype/urgency
+  const emotional_overload = clamp((fear + hype + urgency) / 3 + (post.punctuationIntensity > 0 ? 0.2 : 0), 0, 1);
+  
+  // Selective Framing: Authority + Fear/Hype (using authority to push emotion)
+  const selective_framing = clamp((authority * 0.5 + (fear + hype) * 0.5), 0, 1);
+  
+  // Narrative Skew: High bias words + low diversity in phrasing (simulated)
+  const narrative_skew = clamp(post.biasScore * 1.2, 0, 1);
+
+  const distortionVector: DistortionVector = {
+    emotional_overload,
+    selective_framing,
+    narrative_skew
+  };
+
   // Response Vector Calculation
   const engagement = clamp(interaction.dwellTimeMs / 8000, 0, 1);
   
@@ -93,10 +135,14 @@ export function analyzePost(post: Post, interaction: InteractionMetrics): Analys
   // Explanation Generation
   const scores = Object.entries(influenceVector).sort(([, a], [, b]) => b - a);
   const top2 = scores.slice(0, 2).map(([k]) => k);
-  const explanation = `Detected high ${top2.join(" and ")} cues designed to trigger immediate reaction.`;
+  const distScores = Object.entries(distortionVector).sort(([, a], [, b]) => b - a);
+  const topDist = distScores[0][0].replace('_', ' ');
+  
+  const explanation = `Detected high ${top2.join(" & ")} cues. Distortion signal: ${topDist}.`;
 
   return {
     influenceVector,
+    distortionVector,
     responseVector,
     explanation,
     timestamp: Date.now(),
@@ -104,47 +150,62 @@ export function analyzePost(post: Post, interaction: InteractionMetrics): Analys
   };
 }
 
-export function updateVulnerabilityProfile(influence: InfluenceVector, response: ResponseVector) {
+export function updateVulnerabilityProfile(influence: InfluenceVector, distortion: DistortionVector, response: ResponseVector) {
   const currentProfile = storage.getProfile<InfluenceVector>({
     fear: 0, urgency: 0, hype: 0, authority: 0, curiosity: 0, visual_hype: 0
   });
 
-  // EWMA: new = 0.15 * responseValue + 0.85 * ewma_old
-  // But responseValue is distinct from influence dimension. 
-  // The prompt says: "For each influence dimension: ewma_new = 0.15*responseValue + 0.85*ewma_old"
-  // This implies we map response back to influence? Or maybe responseValue is a scalar applied to the influence type?
-  // Let's assume responseValue is the average of the response vector components, or specific mapping?
-  // "responseValue" is singular in the prompt formula.
-  // Maybe it means: If I respond to a "Fear" post, my "Fear" vulnerability goes up.
-  // So responseValue = magnitude of response * magnitude of influence?
-  // Let's define response magnitude = average of response vector.
-  
   const responseMagnitude = (response.engagement + response.hesitation + response.fixation + response.clickbait_response) / 4;
   
   const newProfile = { ...currentProfile };
   (Object.keys(newProfile) as Array<keyof InfluenceVector>).forEach(key => {
-    // If the post had this influence type, and I responded, my vulnerability to it increases.
-    // If the post didn't have it, it shouldn't change much? 
-    // The prompt formula is simple. Let's use:
-    // input = influence[key] * responseMagnitude
-    // ewma = 0.15 * input + 0.85 * old
-    // Wait, if I don't encounter "fear", input is 0, so my fear vulnerability decays? That makes sense.
-    
     const input = influence[key] * responseMagnitude;
     newProfile[key] = 0.15 * input + 0.85 * currentProfile[key];
   });
 
   storage.saveProfile(newProfile);
   
-  // Update Pattern Graph
-  // "Each event pushes a scalar intensity = sum(influenceVector)/numDimensions"
-  const sumInfluence = Object.values(influence).reduce((a, b) => a + b, 0);
-  const intensity = sumInfluence / 6;
+  // Update Distortion Profile (EWMA)
+  const currentDistortion = storage.getDistortion<DistortionVector>({
+    emotional_overload: 0, selective_framing: 0, narrative_skew: 0
+  });
   
-  const pattern = storage.getPattern<number>();
-  pattern.push(intensity);
-  if (pattern.length > 7) pattern.shift(); // Keep last 7
-  storage.savePattern(pattern);
+  const newDistortion = { ...currentDistortion };
+  (Object.keys(newDistortion) as Array<keyof DistortionVector>).forEach(key => {
+     const input = distortion[key] * responseMagnitude;
+     newDistortion[key] = 0.15 * input + 0.85 * currentDistortion[key];
+  });
+  storage.saveDistortion(newDistortion);
+
+  // Update Integrated Pattern Graph
+  const sumInfluence = Object.values(influence).reduce((a, b) => a + b, 0);
+  const avgInfluence = sumInfluence / 6;
+  
+  const sumDistortion = Object.values(distortion).reduce((a, b) => a + b, 0);
+  const avgDistortion = sumDistortion / 3;
+
+  // Mock Echo/Exposure metrics evolution
+  const prevPattern = storage.getPattern<IntegratedPattern>();
+  const last = prevPattern[prevPattern.length - 1] || { echo_risk: 0.3, exposure_health: 0.7 };
+  
+  // If high distortion + high engagement -> Echo risk up, Exposure health down
+  const echoDelta = (avgDistortion * responseMagnitude) * 0.1;
+  const newEcho = clamp(last.echo_risk + echoDelta - 0.02, 0, 1); // Natural decay
+  
+  const exposureDelta = (avgDistortion * responseMagnitude) * 0.1;
+  const newExposure = clamp(last.exposure_health - exposureDelta + 0.01, 0, 1); // Natural recovery
+
+  const newPoint: IntegratedPattern = {
+    influence: avgInfluence,
+    distortion: avgDistortion,
+    echo_risk: newEcho,
+    exposure_health: newExposure,
+    timestamp: Date.now()
+  };
+  
+  prevPattern.push(newPoint);
+  if (prevPattern.length > 20) prevPattern.shift(); // Keep last 20
+  storage.savePattern(prevPattern);
 }
 
 export function getVulnerabilityProfile() {
@@ -165,12 +226,30 @@ export function getVulnerabilityProfile() {
   return profile;
 }
 
-export function getPatternGraph() {
-  const pattern = storage.getPattern<number>();
+export function getDistortionProfile() {
+  const profile = storage.getDistortion<DistortionVector | null>(null);
+  if (!profile) {
+    return {
+      emotional_overload: 0.3,
+      selective_framing: 0.4,
+      narrative_skew: 0.2
+    };
+  }
+  return profile;
+}
+
+export function getPatternGraph(): IntegratedPattern[] {
+  const pattern = storage.getPattern<IntegratedPattern>();
   
   if (pattern.length === 0) {
-    // Default pattern
-    return [0.2, 0.4, 0.3, 0.6, 0.5, 0.4, 0.55];
+    // Generate mock history
+    return Array.from({ length: 10 }).map((_, i) => ({
+      influence: 0.3 + Math.random() * 0.4,
+      distortion: 0.2 + Math.random() * 0.3,
+      echo_risk: 0.2 + (i * 0.05),
+      exposure_health: 0.8 - (i * 0.04),
+      timestamp: Date.now() - (10 - i) * 1000
+    }));
   }
   
   return pattern;

@@ -26,13 +26,13 @@ export function AnalysisSidebar({ isOpen, onClose, post, onApply }: AnalysisSide
       setAnalysis(result);
       
       // Auto-sync as requested in prompt
-      updateVulnerabilityProfile(result.influenceVector, result.responseVector);
+      updateVulnerabilityProfile(result.influenceVector, result.distortionVector, result.responseVector);
     }
   }, [isOpen, post]);
 
   const handleApply = () => {
     if (analysis) {
-      updateVulnerabilityProfile(analysis.influenceVector, analysis.responseVector);
+      updateVulnerabilityProfile(analysis.influenceVector, analysis.distortionVector, analysis.responseVector);
       if (navigator.vibrate) navigator.vibrate(50);
       onApply();
     }
