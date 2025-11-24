@@ -1,4 +1,4 @@
-# Boundier Demo (Updated)
+# Boundier Demo
 
 A concept demo showcasing how the expanded Conscient Technology engine analyzes psychological influence, reality distortion, and echo‑chamber drift inside social media content.
 
