@@ -298,6 +298,3 @@ Click the trash icon in the Dashboard to clear all stored data.
 ## License
 
 Demo purposes only.
-
-```
-```
